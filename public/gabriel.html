@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MovieVerse - Catálogo</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #0f172a;
+      color: white;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(90deg, #111827, #1e293b);
+      padding: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #38bdf8;
+    }
+
+    .search-area {
+      max-width: 700px;
+      margin: auto;
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-area input {
+      flex: 1;
+      padding: 15px;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .search-area button {
+      padding: 15px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #38bdf8;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .search-area button:hover {
+      background: #0ea5e9;
+      transform: scale(1.05);
+    }
+
+    .filtros {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .filtro-btn {
+      background: #1e293b;
+      color: white;
+      border: 1px solid #334155;
+      padding: 10px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .filtro-btn:hover {
+      background: #38bdf8;
+    }
+
+    .container {
+      width: 90%;
+      margin: 40px auto;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: #1e293b;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 20px;
+    }
+
+    .card-content h2 {
+      margin-bottom: 10px;
+      color: #38bdf8;
+    }
+
+    .info {
+      margin-bottom: 10px;
+      color: #cbd5e1;
+    }
+
+    .nota {
+      display: inline-block;
+      margin-top: 10px;
+      background: #22c55e;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .generos {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      background: #334155;
+      padding: 6px 10px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+    }
+
+    .mensagem {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 1.2rem;
+      color: #94a3b8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🎬 MovieVerse</h1>
+
+    <div class="search-area">
+      <input type="text" id="pesquisa" placeholder="Pesquise filmes ou séries...">
+      <button onclick="buscarFilmes()">🔍</button>
+    </div>
+
+    <div class="filtros">
+      <button class="filtro-btn" onclick="filtrarTipo('todos')">Todos</button>
+      <button class="filtro-btn" onclick="filtrarTipo('filme')">Filmes</button>
+      <button class="filtro-btn" onclick="filtrarTipo('serie')">Séries</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="cards" id="cards"></div>
+
+    <p class="mensagem" id="mensagem"></p>
+  </main>
+
+  <footer>
+    <p>Projeto desenvolvido em JavaScript • JSON • Arrays • DOM</p>
+  </footer>
+
+
+  <script>
+
+    // =========================================
+    // CATÁLOGO JSON
+    // =========================================
+
+    const catalogo = [
+      {
+        id: 1,
+        titulo: "Nebula Force",
+        tipo: "filme",
+        ano: 2024,
+        generos: ["Ficção Científica", "Ação"],
+        nota: 9.1,
+        assistido: true,
+        imagem: "https://picsum.photos/400/600?random=1"
+      },
+
+      {
+        id: 2,
+        titulo: "Shadow City",
+        tipo: "serie",
+        ano: 2023,
+        generos: ["Suspense", "Drama"],
+        nota: 8.7,
+        assistido: false,
+        imagem: "https://picsum.photos/400/600?random=2"
+      },
+
+      {
+        id: 3,
+        titulo: "Last Kingdom Rise",
+        tipo: "serie",
+        ano: 2022,
+        generos: ["Aventura", "Fantasia"],
+        nota: 9.4,
+        assistido: true,
+        imagem: "https://picsum.photos/400/600?random=3"
+      },
+
+      {
+        id: 4,
+        titulo: "Cyber Tokyo",
+        tipo: "filme",
+        ano: 2025,
+        generos: ["Cyberpunk", "Ação"],
+        nota: 8.9,
+        assistido: false,
+        imagem: "https://picsum.photos/400/600?random=4"
+      },
+
+      {
+        id: 5,
+        titulo: "Ocean Secrets",
+        tipo: "filme",
+        ano: 2021,
+        generos: ["Mistério", "Drama"],
+        nota: 8.5,
+        assistido: true,
+        imagem: "https://picsum.photos/400/600?random=5"
+      },
+
+      {
+        id: 6,
+        titulo: "Galaxy Hunters",
+        tipo: "serie",
+        ano: 2020,
+        generos: ["Ficção Científica", "Aventura"],
+        nota: 9.3,
+        assistido: false,
+        imagem: "https://picsum.photos/400/600?random=6"
+      },
+
+      {
+        id: 7,
+        titulo: "Night Protocol",
+        tipo: "filme",
+        ano: 2019,
+        generos: ["Crime", "Suspense"],
+        nota: 8.2,
+        assistido: true,
+        imagem: "https://picsum.photos/400/600?random=7"
+      },
+
+      {
+        id: 8,
+        titulo: "The Crimson Moon",
+        tipo: "serie",
+        ano: 2024,
+        generos: ["Terror", "Fantasia"],
+        nota: 9.0,
+        assistido: true,
+        imagem: "https://picsum.photos/400/600?random=8"
+      }
+    ];
+
+
+    // =========================================
+    // EXIBIR CARDS
+    // =========================================
+
+    const cards = document.getElementById('cards');
+    const mensagem = document.getElementById('mensagem');
+
+
+    function mostrarCatalogo(lista) {
+
+      cards.innerHTML = '';
+      mensagem.innerHTML = '';
+
+      if (lista.length === 0) {
+        mensagem.innerHTML = 'Nenhum filme ou série encontrado.';
+        return;
+      }
+
+      lista.forEach(item => {
+
+        const card = document.createElement('div');
+        card.classList.add('card');
+
+        card.innerHTML = `
+          <img src="${item.imagem}" alt="${item.titulo}">
+
+          <div class="card-content">
+            <h2>${item.titulo}</h2>
+
+            <p class="info"><strong>Tipo:</strong> ${item.tipo}</p>
+
+            <p class="info"><strong>Ano:</strong> ${item.ano}</p>
+
+            <p class="info"><strong>Status:</strong> ${item.assistido ? 'Assistido' : 'Não assistido'}</p>
+
+            <div class="generos">
+              ${item.generos.map(genero => `<span class="tag">${genero}</span>`).join('')}
+            </div>
+
+            <div class="nota">⭐ ${item.nota}</div>
+          </div>
+        `;
+
+        cards.appendChild(card);
+      });
+    }
+
+
+    // =========================================
+    // BUSCA FUNCIONAL
+    // =========================================
+
+    function buscarFilmes() {
+
+      const valor = document
+        .getElementById('pesquisa')
+        .value
+        .toLowerCase();
+
+      const resultado = catalogo.filter(item =>
+        item.titulo.toLowerCase().includes(valor)
+      );
+
+      mostrarCatalogo(resultado);
+    }
+
+
+    // =========================================
+    // FILTRO POR TIPO
+    // =========================================
+
+    function filtrarTipo(tipo) {
+
+      if (tipo === 'todos') {
+        mostrarCatalogo(catalogo);
+        return;
+      }
+
+      const filtrados = catalogo.filter(item => item.tipo === tipo);
+
+      mostrarCatalogo(filtrados);
+    }
+
+
+    // =========================================
+    // ENTER PARA PESQUISAR
+    // =========================================
+
+    document
+      .getElementById('pesquisa')
+      .addEventListener('keypress', function(event) {
+
+        if (event.key === 'Enter') {
+          buscarFilmes();
+        }
+      });
+
+
+    // =========================================
+    // ITERATORS OBRIGATÓRIOS DA ATIVIDADE
+    // =========================================
+
+    console.log(catalogo);
+
+    console.log('Primeiro título:', catalogo[0].titulo);
+
+    console.log('Ano do último item:', catalogo[catalogo.length - 1].ano);
+
+    if (catalogo[2].generos[1]) {
+      console.log('Segundo gênero do terceiro item:', catalogo[2].generos[1]);
+    } else {
+      console.log('O terceiro item possui apenas um gênero.');
+    }
+
+
+    console.log('===== LISTAGEM =====');
+
+    catalogo.forEach(item => {
+      console.log(`- [${item.tipo}] ${item.titulo} (${item.ano})`);
+    });
+
+
+    const titulosMaiusculos = catalogo.map(item => item.titulo.toUpperCase());
+
+    console.log(titulosMaiusculos);
+
+
+    const naoAssistidos = catalogo.filter(item => !item.assistido);
+
+    console.log('Quantidade não assistidos:', naoAssistidos.length);
+
+
+    const notaAlta = catalogo.find(item => item.nota >= 9);
+
+    if (notaAlta) {
+      console.log(`${notaAlta.titulo} - Nota ${notaAlta.nota}`);
+    }
+
+
+    const mediaGeral =
+      catalogo.reduce((acc, item) => acc + item.nota, 0) /
+      catalogo.length;
+
+    console.log('Média geral:', mediaGeral.toFixed(2));
+
+
+    const assistidos = catalogo.filter(item => item.assistido);
+
+    const mediaAssistidos =
+      assistidos.reduce((acc, item) => acc + item.nota, 0) /
+      assistidos.length;
+
+    console.log('Média assistidos:', mediaAssistidos.toFixed(2));
+
+
+    const existeAntigo = catalogo.some(item => item.ano < 2000);
+
+    console.log('Existe item antes de 2000?', existeAntigo);
+
+
+    const todosTemGenero = catalogo.every(item => item.generos.length > 0);
+
+    console.log('Todos possuem gênero?', todosTemGenero);
+
+
+    // =========================================
+    // INICIAR CATÁLOGO
+    // =========================================
+
+    mostrarCatalogo(catalogo);
+
+  </script>
+
+</body>
+</html>

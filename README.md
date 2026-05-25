@@ -5,15 +5,24 @@ Nesta atividade, você fazer exercícios de programação para vai praticar a ma
 
 ## Informações Gerais
 
-- Nome:
-- Matricula:
+- Nome:Gabriel Rodrigues Lima
+- Matricula:908545
 
 ## Prints do console do navegador
 
-<<  COLOQUE A IMAGEM - LISTAGEM DE TÍTULOS - AQUI >>
+Projeto desenvolvido em JavaScript para praticar:
 
-<<  COLOQUE A IMAGEM - CÁLCULO DE MÉDIAS - AQUI >>
+- Objetos
+- Arrays
+- JSON
+- Iterators
+- Manipulação de DOM
 
-<<  COLOQUE A IMAGEM - RESUMO DE VERIFICAÇÕES (SOME E EVERY) - AQUI >>
+Prints
 
-<<  COLOQUE A IMAGEM - PÁGINA COM O RESUMO - AQUI >>
+![Pagina](Imagem1.png)
+
+
+![Console](Imagem2.png)
+
+
